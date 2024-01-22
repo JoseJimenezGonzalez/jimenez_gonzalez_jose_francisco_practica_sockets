@@ -61,37 +61,36 @@ public class ServidorSocketStream {
 
         //En esta parte el servidor estará esperando conexion
         System.out.println("En este punto se esta esperando a que tenga conexion, está listo para aceptar conexiones");
-        //Socket socketCliente = servidor.accept();: Esta línea de código bloquea la ejecución del programa hasta que
+        Socket socketCliente = servidor.accept();
+        //Esta línea de código bloquea la ejecución del programa hasta que
         //se establece una conexión entrante. Cuando un cliente se conecta al servidor, el método accept() se
         //desbloquea y devuelve un nuevo objeto Socket que representa la conexión establecida con ese cliente. Este
         //objeto Socket (socketCliente) se utiliza para la comunicación con ese cliente específico.
-        Socket socketCliente = servidor.accept();
         //Si sigue ejecutandose el codigo en este punto es porque se ha establecido una conexion
         System.out.println("Se ha aceptado la conexion con el cliente");
 
         //Flujo de datos entre cliente y servidor
-        //Esta parte del código se encarga de configurar flujos de entrada y salida para la comunicación entre el
-        //servidor y un cliente específico a través del socket socketCliente. Aquí está una explicación detallada:
-        //InputStream entrada = socketCliente.getInputStream();: Crea un objeto InputStream llamado entrada asociado
-        //al socket socketCliente. Un InputStream se utiliza para leer datos desde el flujo de entrada del socket.
-        //En este contexto, entrada se utilizará para leer datos que el cliente envíe al servidor.
-        //OutputStream salida = socketCliente.getOutputStream();: Crea un objeto OutputStream llamado salida asociado
-        //al socket socketCliente. Un OutputStream se utiliza para escribir datos en el flujo de salida del socket.
-        //En este contexto, salida se utilizará para enviar datos desde el servidor al cliente.
+        //Se crean objetos de entrada y salida, que estan asociados al socketCliente, entrada se usa para leer los datos
+        //que el cliente envia al servidor y la salida se usa para enviar datos desde el servidor al cliente
         InputStream entrada = socketCliente.getInputStream();
         OutputStream salida = socketCliente.getOutputStream();
 
-        //En esta parte se crea el "objeto" donde se guardaran los datos para comunicarse el servidor
-        //byte[] mensaje = new byte[50];: Se crea un array de bytes llamado mensaje con una longitud de 50. Este array
-        //se utiliza para almacenar los datos que el servidor lee del flujo de entrada (entrada) asociado al socketCliente.
+        //En esta parte se crea el "objeto" donde se guardaran los datos para comunicarse el servidor.
+        //Aqui se almacenaran los datos que el servidor lee del fluejo de entrada asociado al socketCliente
         byte[] buffer= new byte[50];
         // Mientras haya datos en el flujo de entrada, sigue leyendo
+        //El bucle lee los datos del flujo de entrada asociado al socketCliente
+        //Lo que hace read(buffer) es leer los datos del flujo de entrada y los almacena en el buffer
+        //Si no hay datos que leer devuelve -1
+        //bytesRead indica la cantidad de bytes que hay que leer
         int bytesRead;
         while ((bytesRead = entrada.read(buffer)) != -1) {
+            //Se crea mensajeCompleto a partir de los bytes en el array buffer, empezando desde
+            //el primer byte (índice 0) y tomando tantos bytes como indique bytesRead.
             String mensajeCompleto = new String(buffer, 0, bytesRead).trim();
 
             // Dividir la cadena usando el delimitador "*||||||*"
-            String[] partes = mensajeCompleto.split("\\*\\|\\|\\|\\|\\|\\|\\*");
+            String[] partes = mensajeCompleto.split("\\*\\|\\*");
 
             if (partes.length == 2) {
                 String mensajeRecibido = partes[0];
@@ -130,7 +129,7 @@ public class ServidorSocketStream {
                 respuesta = descodificarMensaje(mensaje);
                 break;
             default:
-                respuesta = "Aprende a escribir!!";
+                respuesta = "No hay ninguna opción con ese nombre!!";
                 break;
         }
         salida.write(respuesta.getBytes());
@@ -180,7 +179,8 @@ public class ServidorSocketStream {
             }
 
             respuesta.append(mensajeCodificado);
-            mensajeCodificado.setLength(0); // Reiniciar el StringBuilder para la siguiente palabra
+            // Reiniciar el StringBuilder para la siguiente palabra
+            mensajeCodificado.setLength(0);
         }
 
         return respuesta.toString();
@@ -229,7 +229,8 @@ public class ServidorSocketStream {
             }
 
             respuesta.append(mensajeDescodificado);
-            mensajeDescodificado.setLength(0); // Reiniciar el StringBuilder para la siguiente palabra
+            // Reiniciar el StringBuilder para la siguiente palabra
+            mensajeDescodificado.setLength(0);
         }
         return respuesta.toString();
     }
@@ -237,9 +238,11 @@ public class ServidorSocketStream {
     private static String encontrarClave(Map<String, Integer> diccionario, int valorBuscado) {
         for (Map.Entry<String, Integer> entry : diccionario.entrySet()) {
             if (entry.getValue() == valorBuscado) {
-                return entry.getKey(); // Devuelve la clave cuando se encuentra el valor
+                // Devuelve la clave cuando se encuentra el valor
+                return entry.getKey();
             }
         }
-        return null; // Devuelve null si no se encuentra el valor
+        // Devuelve null si no se encuentra el valor
+        return null;
     }
 }

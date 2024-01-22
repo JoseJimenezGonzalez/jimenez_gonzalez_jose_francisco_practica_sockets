@@ -16,6 +16,7 @@ public class ClienteSocketStream {
         Socket cliente = new Socket();
 
         System.out.println("Establecemos conexion");
+        //Le ponemos los datos que hemos introducido en el servidor
         InetSocketAddress dircServidor = new InetSocketAddress ("localhost", 55555);
         cliente.connect(dircServidor);
 
@@ -25,6 +26,7 @@ public class ClienteSocketStream {
 
 
         System.out.println("Ya se puede empezar a mandar mensajes");
+        System.out.println("Introduzaca el numero entre corchete según la opción que desee");
         System.out.println("¿Qué desea hacer?\n[0] Mandar mensaje\n[1] Salir del programa");
         int opcion  = teclado.nextInt();
         teclado.nextLine();
@@ -41,9 +43,11 @@ public class ClienteSocketStream {
                     System.out.println("Introduce el mensaje que deseas codificar");
                     mensaje = teclado.nextLine();
                     mensajeCompleto = agregarSeparador(mensaje) + "codificar";
-                    salida.write(mensajeCompleto.getBytes());// enviamos la prengunta al servidor
+                    // enviamos la prengunta al servidor
+                    salida.write(mensajeCompleto.getBytes());
                     respuesta = new byte[50];
-                    entrada.read(respuesta);// almacenamos la respuesta del servidor
+                    // almacenamos la respuesta del servidor
+                    entrada.read(respuesta);
                     mensajeFinal = new String(respuesta).trim();
                     System.out.println("Mensaje inicial:" + mensaje);
                     System.out.println("Respuesta recibida(codificada): " + new String(mensajeFinal).trim());
@@ -52,9 +56,11 @@ public class ClienteSocketStream {
                     System.out.println("Introduce el mensaje que deseas descodificar");
                     mensaje = teclado.nextLine();
                     mensajeCompleto = agregarSeparador(mensaje) + "descodificar";
-                    salida.write(mensajeCompleto.getBytes());// enviamos la prengunta al servidor
+                    // enviamos la prengunta al servidor
+                    salida.write(mensajeCompleto.getBytes());
                     respuesta = new byte[50];
-                    entrada.read(respuesta);// almacenamos la respuesta del servidor
+                    // almacenamos la respuesta del servidor
+                    entrada.read(respuesta);
                     mensajeFinal = new String(respuesta).trim();
                     System.out.println("Mensaje inicial:" + mensaje);
                     System.out.println("Respuesta recibida(descodificada): " + new String(mensajeFinal).trim());
@@ -71,10 +77,10 @@ public class ClienteSocketStream {
 
         System.out.println("Cerrando el socket Cliente");
         cliente.close();
-        System.out.println("Conexion socket Cliente cerrada");
+        System.out.println("Conexión socket Cliente cerrada");
 
     }
     private static String agregarSeparador(String mensaje){
-        return mensaje + "*||||||*";
+        return mensaje + "*|*";
     }
 }
