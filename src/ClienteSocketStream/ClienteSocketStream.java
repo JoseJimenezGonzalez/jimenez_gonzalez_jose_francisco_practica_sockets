@@ -45,7 +45,7 @@ public class ClienteSocketStream {
                     mensajeCompleto = agregarSeparador(mensaje) + "codificar";
                     // enviamos la prengunta al servidor
                     salida.write(mensajeCompleto.getBytes());
-                    respuesta = new byte[50];
+                    respuesta = new byte[1024];
                     // almacenamos la respuesta del servidor
                     entrada.read(respuesta);
                     mensajeFinal = new String(respuesta).trim();
@@ -58,7 +58,7 @@ public class ClienteSocketStream {
                     mensajeCompleto = agregarSeparador(mensaje) + "descodificar";
                     // enviamos la prengunta al servidor
                     salida.write(mensajeCompleto.getBytes());
-                    respuesta = new byte[50];
+                    respuesta = new byte[1024];
                     // almacenamos la respuesta del servidor
                     entrada.read(respuesta);
                     mensajeFinal = new String(respuesta).trim();

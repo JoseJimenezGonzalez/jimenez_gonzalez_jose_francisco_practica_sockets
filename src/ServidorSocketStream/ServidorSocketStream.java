@@ -77,7 +77,7 @@ public class ServidorSocketStream {
 
         //En esta parte se crea el "objeto" donde se guardaran los datos para comunicarse el servidor.
         //Aqui se almacenaran los datos que el servidor lee del fluejo de entrada asociado al socketCliente
-        byte[] buffer= new byte[50];
+        byte[] buffer= new byte[1024];
         // Mientras haya datos en el flujo de entrada, sigue leyendo
         //El bucle lee los datos del flujo de entrada asociado al socketCliente
         //Lo que hace read(buffer) es leer los datos del flujo de entrada y los almacena en el buffer
@@ -104,7 +104,7 @@ public class ServidorSocketStream {
             }
 
             // Limpia el buffer para la próxima lectura
-            buffer = new byte[50];
+            buffer = new byte[1024];
         }
 
         //En esta parte es para leer dichos datos, mientras tenga algo que leer
